@@ -1,14 +1,14 @@
-# Generic EPP with DNSsec Registrar Module for WHMCS
-Generic EPP with DNSsec Registry-Registrar Module for WHMCS >= 7.7.1
+# Registrio Module for WHMCS
+Registrio Module for WHMCS >= 7.7.1
 
-	# Generic EPP module for WHMCS which provide full functionality coverage for domains management and based on communication with Registry through Extensible Provisioning Protocol (EPP).
+	# Registrio Module for WHMCS which provide full functionality coverage for domains management and based on communication with Registry through Extensible Provisioning Protocol (EPP).
 	# EPP: RFC 5730, 5731, 5732, 5733, 5734, 5910
-	# this module it is working with https://www.rrpproxy.net/ (https://www.rrpproxy.net/API/EPP), http://www.udr.hk.com/registry, also you can create your own Registry using Open Source EPP Server https://sourceforge.net/projects/epp-server/
+	# this module it is working with https://registr.io software.
 
 
 ## Installation steps
-	# Upload via FTP the 'genericepp' directory to <whmcs_root>/modules/registrars/
-	# Set write permissions for log file <whmcs_root>/modules/registrars/genericepp/log/genericepp.log
+	# Upload via FTP the 'registrio' directory to <whmcs_root>/modules/registrars/
+	# Set write permissions for log file <whmcs_root>/modules/registrars/registrio/log/registrio.log
 
 
 ## Generate .PEM certificate 
@@ -27,9 +27,9 @@ Generic EPP with DNSsec Registry-Registrar Module for WHMCS >= 7.7.1
 
 
 ## Upload certificates
-	# Copy certificate.cer to <whmcs_root>/modules/registrars/genericepp/local_cert/certificate.cer
-	# Copy www.yourdomain.com.key to <whmcs_root>/modules/registrars/genericepp/local_pk/www.yourdomain.com.key
-	# Copy a certificate authority file to <whmcs_root>/modules/registrars/genericepp/cafile/
+	# Copy certificate.cer to <whmcs_root>/modules/registrars/registrio/local_cert/certificate.cer
+	# Copy www.yourdomain.com.key to <whmcs_root>/modules/registrars/registrio/local_pk/www.yourdomain.com.key
+	# Copy a certificate authority file to <whmcs_root>/modules/registrars/registrio/cafile/
 
 
 ## or you may use https://letsencrypt.org/
@@ -64,15 +64,15 @@ Generic EPP with DNSsec Registry-Registrar Module for WHMCS >= 7.7.1
     }
 
 
-## Configure Generic EPP module in WHMCS
+## Configure Registrio EPP module in WHMCS
 	# Login to WHMCS admin panel.
 	# Go to Setup > Products/Service > Domain registrars
-	# Activate Generic EPP module
+	# Activate Registrio EPP module
 	# Configure module by providing EPP Server access credentials
 
 
 ## Start using module
 	# Login to WHMCS admin panel.
 	# Go to Setup > Products/Service > Domain pricing
-	# Create ".yourtld" TLD and selectg "Genericepp" module in "Auto Registration" field
+	# Create ".yourtld" TLD and selectg "Registrio" module in "Auto Registration" field
 	# Define your pricing for different registration/renewal terms
