@@ -3,11 +3,13 @@
 *
 * NOTICE OF LICENSE
 *
-*  @package   GenericEPP
+*  @package   Registrio
 *  @version   1.0.1
 *  @author    Lilian Rudenco <info@xpanel.com>
+*  @modified  Iliya Bazlyankov <hello@registr.io>
 *  @copyright 2019 Lilian Rudenco
 *  @link      http://www.xpanel.com/
+*  @link	  https://registr.io
 *  @license   http://opensource.org/licenses/afl-3.0.php  Academic Free License (AFL 3.0)
 */
 
@@ -18,31 +20,31 @@ if (!defined("WHMCS")) {
 use Illuminate\Database\Capsule\Manager as Capsule;
 use Illuminate\Database\Schema\Blueprint;
 
-function genericepp_MetaData()
+function registrioepp_MetaData()
 {
     return array(
-        'DisplayName' => 'Generic EPP Module for WHMCS',
+        'DisplayName' => 'Registrio EPP Module for WHMCS',
         'APIVersion' => '1.0.1',
     );
 }
 
-function _genericepp_error_handler($errno, $errstr, $errfile, $errline)
+function _registrioepp_error_handler($errno, $errstr, $errfile, $errline)
 {
-	if (!preg_match("/genericepp/i", $errfile)) {
+	if (!preg_match("/registrioepp/i", $errfile)) {
 		return true;
 	}
 
-	_genericepp_log("Error $errno:", "$errstr on line $errline in file $errfile");
+	_registrioepp_log("Error $errno:", "$errstr on line $errline in file $errfile");
 }
 
-set_error_handler('_genericepp_error_handler');
-_genericepp_log('================= ' . date("Y-m-d H:i:s") . ' =================');
+set_error_handler('_registrioepp_error_handler');
+_registrioepp_log('================= ' . date("Y-m-d H:i:s") . ' =================');
 
-function genericepp_getConfigArray($params = array())
+function registrioepp_getConfigArray($params = array())
 {
-	_genericepp_log(__FUNCTION__, $params);
-	_genericepp_create_table();
-	_genericepp_create_column();
+	_registrioepp_log(__FUNCTION__, $params);
+	_registrioepp_create_table();
+	_registrioepp_create_column();
 
 	$cafiles = array();
 	$d = dir(__DIR__ . '/cafile');
@@ -147,19 +149,19 @@ function genericepp_getConfigArray($params = array())
 	return $configarray;
 }
 
-function _genericepp_startEppClient($params = array())
+function _registrioepp_startEppClient($params = array())
 {
-	$s = new genericepp_epp_client($params);
+	$s = new registrioepp_epp_client($params);
 	$s->login($params['clid'], $params['pw'], $params['registrarprefix']);
 	return $s;
 }
 
-function genericepp_RegisterDomain($params = array())
+function registrioepp_RegisterDomain($params = array())
 {
-	_genericepp_log(__FUNCTION__, $params);
+	_registrioepp_log(__FUNCTION__, $params);
 	$return = array();
 	try {
-		$s = _genericepp_startEppClient($params);
+		$s = _registrioepp_startEppClient($params);
 		$from = $to = array();
 		$from[] = '/{{ name }}/';
 		$to[] = htmlspecialchars($params['domainname']);
@@ -447,12 +449,12 @@ function genericepp_RegisterDomain($params = array())
 	return $return;
 }
 
-function genericepp_RenewDomain($params = array())
+function registrioepp_RenewDomain($params = array())
 {
-	_genericepp_log(__FUNCTION__, $params);
+	_registrioepp_log(__FUNCTION__, $params);
 	$return = array();
 	try {
-		$s = _genericepp_startEppClient($params);
+		$s = _registrioepp_startEppClient($params);
 		$from = $to = array();
 		$from[] = '/{{ name }}/';
 		$to[] = htmlspecialchars($params['domainname']);
@@ -520,12 +522,12 @@ function genericepp_RenewDomain($params = array())
 	return $return;
 }
 
-function genericepp_TransferDomain($params = array())
+function registrioepp_TransferDomain($params = array())
 {
-	_genericepp_log(__FUNCTION__, $params);
+	_registrioepp_log(__FUNCTION__, $params);
 	$return = array();
 	try {
-		$s = _genericepp_startEppClient($params);
+		$s = _registrioepp_startEppClient($params);
 		$from = $to = array();
 		$from[] = '/{{ name }}/';
 		$to[] = htmlspecialchars($params['domainname']);
@@ -571,12 +573,12 @@ function genericepp_TransferDomain($params = array())
 	return $return;
 }
 
-function genericepp_GetNameservers($params = array())
+function registrioepp_GetNameservers($params = array())
 {
-	_genericepp_log(__FUNCTION__, $params);
+	_registrioepp_log(__FUNCTION__, $params);
 	$return = array();
 	try {
-		$s = _genericepp_startEppClient($params);
+		$s = _registrioepp_startEppClient($params);
 		$from = $to = array();
 		$from[] = '/{{ name }}/';
 		$to[] = htmlspecialchars($params['domainname']);
@@ -631,12 +633,12 @@ function genericepp_GetNameservers($params = array())
 	return $return;
 }
 
-function genericepp_SaveNameservers($params = array())
+function registrioepp_SaveNameservers($params = array())
 {
-	_genericepp_log(__FUNCTION__, $params);
+	_registrioepp_log(__FUNCTION__, $params);
 	$return = array();
 	try {
-		$s = _genericepp_startEppClient($params);
+		$s = _registrioepp_startEppClient($params);
 		$from = $to = array();
 		$from[] = '/{{ name }}/';
 		$to[] = htmlspecialchars($params['domainname']);
@@ -745,12 +747,12 @@ function genericepp_SaveNameservers($params = array())
 	return $return;
 }
 
-function genericepp_GetRegistrarLock($params = array())
+function registrioepp_GetRegistrarLock($params = array())
 {
-	_genericepp_log(__FUNCTION__, $params);
+	_registrioepp_log(__FUNCTION__, $params);
 	$return = 'unlocked';
 	try {
-		$s = _genericepp_startEppClient($params);
+		$s = _registrioepp_startEppClient($params);
 		$from = $to = array();
 		$from[] = '/{{ name }}/';
 		$to[] = htmlspecialchars($params['domainname']);
@@ -793,12 +795,12 @@ function genericepp_GetRegistrarLock($params = array())
 	return $return;
 }
 
-function genericepp_SaveRegistrarLock($params = array())
+function registrioepp_SaveRegistrarLock($params = array())
 {
-	_genericepp_log(__FUNCTION__, $params);
+	_registrioepp_log(__FUNCTION__, $params);
 	$return = array();
 	try {
-		$s = _genericepp_startEppClient($params);
+		$s = _registrioepp_startEppClient($params);
 		$from = $to = array();
 		$from[] = '/{{ name }}/';
 		$to[] = htmlspecialchars($params['domainname']);
@@ -905,12 +907,12 @@ function genericepp_SaveRegistrarLock($params = array())
 	return $return;
 }
 
-function genericepp_GetContactDetails($params = array())
+function registrioepp_GetContactDetails($params = array())
 {
-	_genericepp_log(__FUNCTION__, $params);
+	_registrioepp_log(__FUNCTION__, $params);
 	$return = array();
 	try {
-		$s = _genericepp_startEppClient($params);
+		$s = _registrioepp_startEppClient($params);
 		$from = $to = array();
 		$from[] = '/{{ name }}/';
 		$to[] = htmlspecialchars($params['domainname']);
@@ -1028,12 +1030,12 @@ function genericepp_GetContactDetails($params = array())
 	return $return;
 }
 
-function genericepp_SaveContactDetails($params = array())
+function registrioepp_SaveContactDetails($params = array())
 {
-	_genericepp_log(__FUNCTION__, $params);
+	_registrioepp_log(__FUNCTION__, $params);
 	$return = array();
 	try {
-		$s = _genericepp_startEppClient($params);
+		$s = _registrioepp_startEppClient($params);
 		$from = $to = array();
 		$from[] = '/{{ name }}/';
 		$to[] = htmlspecialchars($params['domainname']);
@@ -1183,12 +1185,12 @@ function genericepp_SaveContactDetails($params = array())
 	return $return;
 }
 
-function genericepp_IDProtectToggle($params = array())
+function registrioepp_IDProtectToggle($params = array())
 {
-	_genericepp_log(__FUNCTION__, $params);
+	_registrioepp_log(__FUNCTION__, $params);
 	$return = array();
 	try {
-		$s = _genericepp_startEppClient($params);
+		$s = _registrioepp_startEppClient($params);
 		$from = $to = array();
 		$from[] = '/{{ name }}/';
 		$to[] = htmlspecialchars($params['domainname']);
@@ -1275,12 +1277,12 @@ function genericepp_IDProtectToggle($params = array())
 	return $return;
 }
 
-function genericepp_GetEPPCode($params = array())
+function registrioepp_GetEPPCode($params = array())
 {
-	_genericepp_log(__FUNCTION__, $params);
+	_registrioepp_log(__FUNCTION__, $params);
 	$return = array();
 	try {
-		$s = _genericepp_startEppClient($params);
+		$s = _registrioepp_startEppClient($params);
 		$from = $to = array();
 		$from[] = '/{{ name }}/';
 		$to[] = htmlspecialchars($params['domainname']);
@@ -1388,7 +1390,7 @@ Copyright (C) " . date('Y') . " " . $CONFIG['CompanyName'] . " All rights reserv
 		$mail->Body = nl2br(htmlspecialchars($message));
 		$mail->AltBody = $message; //text
 		if (!$mail->Send()) {
-			_genericepp_log(__FUNCTION__, $mail);
+			_registrioepp_log(__FUNCTION__, $mail);
 			throw new exception('There has been an error sending the message. ' . $mail->ErrorInfo);
 		}
 
@@ -1414,12 +1416,12 @@ Copyright (C) " . date('Y') . " " . $CONFIG['CompanyName'] . " All rights reserv
 	return $return;
 }
 
-function genericepp_RegisterNameserver($params = array())
+function registrioepp_RegisterNameserver($params = array())
 {
-	_genericepp_log(__FUNCTION__, $params);
+	_registrioepp_log(__FUNCTION__, $params);
 	$return = array();
 	try {
-		$s = _genericepp_startEppClient($params);
+		$s = _registrioepp_startEppClient($params);
 		$from = $to = array();
 		$from[] = '/{{ name }}/';
 		$to[] = htmlspecialchars($params['nameserver']);
@@ -1487,12 +1489,12 @@ function genericepp_RegisterNameserver($params = array())
 	return $return;
 }
 
-function genericepp_ModifyNameserver($params = array())
+function registrioepp_ModifyNameserver($params = array())
 {
-	_genericepp_log(__FUNCTION__, $params);
+	_registrioepp_log(__FUNCTION__, $params);
 	$return = array();
 	try {
-		$s = _genericepp_startEppClient($params);
+		$s = _registrioepp_startEppClient($params);
 		$from = $to = array();
 		$from[] = '/{{ name }}/';
 		$to[] = htmlspecialchars($params['nameserver']);
@@ -1543,12 +1545,12 @@ function genericepp_ModifyNameserver($params = array())
 	return $return;
 }
 
-function genericepp_DeleteNameserver($params = array())
+function registrioepp_DeleteNameserver($params = array())
 {
-	_genericepp_log(__FUNCTION__, $params);
+	_registrioepp_log(__FUNCTION__, $params);
 	$return = array();
 	try {
-		$s = _genericepp_startEppClient($params);
+		$s = _registrioepp_startEppClient($params);
 		$from = $to = array();
 		$from[] = '/{{ name }}/';
 		$to[] = htmlspecialchars($params['nameserver']);
@@ -1585,12 +1587,12 @@ function genericepp_DeleteNameserver($params = array())
 	return $return;
 }
 
-function genericepp_RequestDelete($params = array())
+function registrioepp_RequestDelete($params = array())
 {
-	_genericepp_log(__FUNCTION__, $params);
+	_registrioepp_log(__FUNCTION__, $params);
 	$return = array();
 	try {
-		$s = _genericepp_startEppClient($params);
+		$s = _registrioepp_startEppClient($params);
 		$from = $to = array();
 		$from[] = '/{{ name }}/';
 		$to[] = htmlspecialchars($params['domainname']);
@@ -1632,12 +1634,12 @@ function genericepp_RequestDelete($params = array())
  * @param array $params Parameters from WHMCS
  * @return array
  */
-function genericepp_manageDNSSECDSRecords($params = array())
+function registrioepp_manageDNSSECDSRecords($params = array())
 {
-	_genericepp_log(__FUNCTION__, $params);
+	_registrioepp_log(__FUNCTION__, $params);
 	$return = array();
 	try {
-		$s = _genericepp_startEppClient($params);
+		$s = _registrioepp_startEppClient($params);
 
 		if (isset($_POST['command']) && ($_POST['command'] === 'secDNSadd')) {
 			$keyTag = $_POST['keyTag'];
@@ -1821,7 +1823,7 @@ function genericepp_manageDNSSECDSRecords($params = array())
  * Buttons for the client area for custom functions.
  * @return array
  */
-function genericepp_ClientAreaCustomButtonArray()
+function registrioepp_ClientAreaCustomButtonArray()
 {
 	$buttonarray = array(
 		Lang::Trans('Manage DNSSEC DS Records') => 'manageDNSSECDSRecords'
@@ -1830,9 +1832,9 @@ function genericepp_ClientAreaCustomButtonArray()
 	return $buttonarray;
 }
 
-function genericepp_AdminCustomButtonArray($params = array())
+function registrioepp_AdminCustomButtonArray($params = array())
 {
-	_genericepp_log(__FUNCTION__, $params);
+	_registrioepp_log(__FUNCTION__, $params);
 	$domainid = $params['domainid'];
 
 	// $domain = Capsule::table('tbldomains')->where('id', $domainid)->first();
@@ -1851,12 +1853,12 @@ function genericepp_AdminCustomButtonArray($params = array())
 	}
 }
 
-function genericepp_OnHoldDomain($params = array())
+function registrioepp_OnHoldDomain($params = array())
 {
-	_genericepp_log(__FUNCTION__, $params);
+	_registrioepp_log(__FUNCTION__, $params);
 	$return = array();
 	try {
-		$s = _genericepp_startEppClient($params);
+		$s = _registrioepp_startEppClient($params);
 		$from = $to = array();
 		$from[] = '/{{ name }}/';
 		$to[] = htmlspecialchars($params['domainname']);
@@ -1936,12 +1938,12 @@ function genericepp_OnHoldDomain($params = array())
 	return $return;
 }
 
-function genericepp_UnHoldDomain($params = array())
+function registrioepp_UnHoldDomain($params = array())
 {
-	_genericepp_log(__FUNCTION__, $params);
+	_registrioepp_log(__FUNCTION__, $params);
 	$return = array();
 	try {
-		$s = _genericepp_startEppClient($params);
+		$s = _registrioepp_startEppClient($params);
 		$from = $to = array();
 		$from[] = '/{{ name }}/';
 		$to[] = htmlspecialchars($params['domainname']);
@@ -2016,12 +2018,12 @@ function genericepp_UnHoldDomain($params = array())
 	return $return;
 }
 
-function genericepp_TransferSync($params = array())
+function registrioepp_TransferSync($params = array())
 {
-	_genericepp_log(__FUNCTION__, $params);
+	_registrioepp_log(__FUNCTION__, $params);
 	$return = array();
 	try {
-		$s = _genericepp_startEppClient($params);
+		$s = _registrioepp_startEppClient($params);
 		$from = $to = array();
 		$from[] = '/{{ name }}/';
 		$to[] = htmlspecialchars($params['sld'] . '.' . $params['tld']);
@@ -2087,12 +2089,12 @@ function genericepp_TransferSync($params = array())
 	return $return;
 }
 
-function genericepp_Sync($params = array())
+function registrioepp_Sync($params = array())
 {
-	_genericepp_log(__FUNCTION__, $params);
+	_registrioepp_log(__FUNCTION__, $params);
 	$return = array();
 	try {
-		$s = _genericepp_startEppClient($params);
+		$s = _registrioepp_startEppClient($params);
 		$from = $to = array();
 		$from[] = '/{{ name }}/';
 		$to[] = htmlspecialchars($params['sld'] . '.' . $params['tld']);
@@ -2154,7 +2156,7 @@ function genericepp_Sync($params = array())
 	return $return;
 }
 
-class genericepp_epp_client
+class registrioepp_epp_client
 
 {
 	var $socket;
@@ -2282,7 +2284,7 @@ class genericepp_epp_client
 
 	function read()
 	{
-		_genericepp_log('================= read-this =================', $this);
+		_registrioepp_log('================= read-this =================', $this);
 		if (feof($this->socket)) {
 			throw new exception('Connection appears to have closed.');
 		}
@@ -2295,17 +2297,17 @@ class genericepp_epp_client
 		$unpacked = unpack('N', $hdr);
 		$xml = fread($this->socket, ($unpacked[1] - 4));
 		$xml = preg_replace('/></', ">\n<", $xml);
-		_genericepp_log('================= read =================', $xml);
+		_registrioepp_log('================= read =================', $xml);
 		return $xml;
 	}
 
 	function write($xml, $action = 'Unknown')
 	{
-		_genericepp_log('================= send-this =================', $this);
-		_genericepp_log('================= send =================', $xml);
+		_registrioepp_log('================= send-this =================', $this);
+		_registrioepp_log('================= send =================', $xml);
 		@fwrite($this->socket, pack('N', (strlen($xml) + 4)) . $xml);
 		$r = $this->read();
-		_genericepp_modulelog($xml, $r, $action);
+		_registrioepp_modulelog($xml, $r, $action);
 		$r = new SimpleXMLElement($r);
 		if ($r->response->result->attributes()->code >= 2000) {
 			throw new exception($r->response->result->msg);
@@ -2333,7 +2335,7 @@ class genericepp_epp_client
 	}
 }
 
-function _genericepp_modulelog($send, $responsedata, $action)
+function _registrioepp_modulelog($send, $responsedata, $action)
 {
 	$from = $to = array();
 	$from[] = "/<clID>[^<]*<\/clID>/i";
@@ -2341,16 +2343,16 @@ function _genericepp_modulelog($send, $responsedata, $action)
 	$from[] = "/<pw>[^<]*<\/pw>/i";
 	$to[] = '<pw>Not disclosed pw</pw>';
 	$sendforlog = preg_replace($from, $to, $send);
-	logModuleCall('genericepp',$action,$sendforlog,$responsedata);
+	logModuleCall('registrioepp',$action,$sendforlog,$responsedata);
 }
 
-function _genericepp_log($func, $params = false)
+function _registrioepp_log($func, $params = false)
 {
 
 	// comment line below to see logs
 	return true;
 
-	$handle = fopen(dirname(__FILE__) . '/log/genericepp.log', 'a');
+	$handle = fopen(dirname(__FILE__) . '/log/registrioepp.log', 'a');
 	ob_start();
 	echo "\n================= $func =================\n";
 	print_r($params);
@@ -2360,7 +2362,7 @@ function _genericepp_log($func, $params = false)
 	fclose($handle);
 }
 
-function _genericepp_create_table()
+function _registrioepp_create_table()
 {
 
 	//	Capsule::schema()->table('tbldomains', function (Blueprint $table) {
@@ -2411,7 +2413,7 @@ function _genericepp_create_table()
 	}
 }
 
-function _genericepp_create_column()
+function _registrioepp_create_column()
 {
 	if (!Capsule::schema()->hasColumn('tbldomains', 'trstatus')) {
 		try {
