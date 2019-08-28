@@ -2352,7 +2352,7 @@ function _registrioepp_log($func, $params = false)
 	// comment line below to see logs
 	return true;
 
-	$handle = fopen(dirname(__FILE__) . '/log/registrioepp.log', 'a');
+	$handle = fopen(dirname(__FILE__) . '/log/registrio.log', 'a');
 	ob_start();
 	echo "\n================= $func =================\n";
 	print_r($params);
